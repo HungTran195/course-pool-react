@@ -23,7 +23,7 @@ export default class NavContainer extends Component {
                         <a href="" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"><i
                             className="fas fa-user-circle fa-2x text-white-50"></i></a>
                         <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item" href="{% url 'courses:login' %}">Login</a></li>
+                            <li><a className="dropdown-item" href="{% url 'courses:login' %}">Login</a></li>
 
                         </ul>
                     </div>
