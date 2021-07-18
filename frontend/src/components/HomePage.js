@@ -1,8 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import FavoriteCoursePage from "./FavoriteCoursePage";
 import SuggestCoursePage from "./SuggestCoursePage";
 import NavContainer from "./Navbar";
-import CourseCard from "./CourseCard"
+import CourseCard from "./CourseCard";
+import HeroSection from "./HeroSection";
+
 import { Grid, Button, ButtonGroup, Typography, AppBar, Toolbar, IconButton } from "@material-ui/core";
 import {
 	BrowserRouter as Router,
@@ -18,40 +20,25 @@ export default class HomePage extends Component {
 		super(props);
 		this.state = {
 			allCourse: [],
+			fromPage: "HomePage",
 			isFetching: false,
 		};
 		// this.fetchAllCourse = this.fetchAllCourse.bind(this);
 	};
 
-	renderHomePage = function () {
+	render() {
 		return (
 			<>
-				<NavContainer />
+				<HeroSection props={{ fromPage: "HomePage" }} />
 				<div className="container">
 					<CourseCard allCourses={this.state.allCourse} />
 				</div>
 			</>
 
-		);
-	};
-
-	render() {
-		return (
-			<Router>
-				<Switch>
-					<Route
-						exact path="/"
-						render={() => {
-							return this.renderHomePage();
-						}}
-					/>
-					<Route path="/favorite" component={FavoriteCoursePage} />
-					<Route path="/suggest-course" component={SuggestCoursePage} />
-				</Switch>
-			</Router>
-		);
+		)
 	}
 	componentDidMount() {
+		document.title = "Course Pool | Home Page"
 		this.fetchAllCourse();
 	}
 	fetchAllCourse = function () {
