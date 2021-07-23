@@ -4,7 +4,7 @@ import HomePage from "./HomePage/HomePage";
 import FavoriteCoursePage from "./FavoritePage/FavoriteCoursePage";
 import SuggestCoursePage from "./SuggestCoursePage/SuggestCoursePage";
 import NavContainer from "./Navbar/Navbar";
-
+import Footer from "./Footer/Footer"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 export default class App extends Component {
     constructor(props) {
@@ -24,6 +24,7 @@ export default class App extends Component {
 
                     </Switch>
                 </Router>
+                <Footer />
             </>
         );
     }
