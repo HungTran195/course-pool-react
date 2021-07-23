@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
-import HomePage from "./HomePage";
-import FavoriteCoursePage from "./FavoriteCoursePage";
-import SuggestCoursePage from "./SuggestCoursePage";
-import NavContainer from "./Navbar";
+import HomePage from "./HomePage/HomePage";
+import FavoriteCoursePage from "./FavoritePage/FavoriteCoursePage";
+import SuggestCoursePage from "./SuggestCoursePage/SuggestCoursePage";
+import NavContainer from "./Navbar/Navbar";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 export default class App extends Component {
@@ -19,7 +19,7 @@ export default class App extends Component {
                 <Router>
                     <Switch>
                         <Route exact path="/" component={HomePage} />
-                        <Route exact path="/favorites" component={FavoriteCoursePage} />
+                        <Route exact path="/favorite" component={FavoriteCoursePage} />
                         <Route exact path="/suggest-course" component={SuggestCoursePage} />
 
                     </Switch>
