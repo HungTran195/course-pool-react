@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+// import { Grid, Button, ButtonGroup, Typography, AppBar, Toolbar, IconButton } from "@material-ui/core";
+import { Button } from '@material-ui/core'
 export default class HeroSectionForHome extends Component {
     constructor(props) {
         super(props);
@@ -37,8 +38,8 @@ export default class HeroSectionForHome extends Component {
                             type="text" name="key"
                             placeholder="Python, JavaScript, Swift..."
                             onChange={this.handleFormChange} />
-                        <button className="btn-outline-light bg-info text-dark rounded-end" type="submit"><i
-                            className="fas fa-search px-2"></i></button>
+                        <Button color="primary" variant="contained" type="submit"><i
+                            className="fas fa-search px-2"></i></Button>
                     </form>
                 </div>
             </div>
