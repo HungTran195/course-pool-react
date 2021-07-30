@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import { Grid, Button, ButtonGroup, Typography, AppBar, Toolbar, IconButton } from "@material-ui/core";
-import { Button } from '@material-ui/core'
+import { Button, TextField, Input } from '@material-ui/core'
 export default class HeroSectionForHome extends Component {
     constructor(props) {
         super(props);
@@ -34,7 +34,7 @@ export default class HeroSectionForHome extends Component {
                 </div>
                 <div className=" my-2 mb-3 search-bar " >
                     <form className="input-group" onSubmit={this.handleFormSubmit}>
-                        <input className="form-control rounded-start"
+                        <Input className="form-control " variant="outlined"
                             type="text" name="key"
                             placeholder="Python, JavaScript, Swift..."
                             onChange={this.handleFormChange} />
