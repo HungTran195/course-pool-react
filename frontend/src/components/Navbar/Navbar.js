@@ -1,58 +1,94 @@
-import React, { Component } from 'react';
+import React, { Component, useCallback } from 'react';
+import GoogleLogin from 'react-google-login';
+import GoogleButton from 'react-google-button';
+
+const GOOGLE_CLIENT_ID = '780984150057-rm7mulksf6mqa5m61frjel4b7aghso25.apps.googleusercontent.com'
+
+const NavContainer = () => {
+    // Handle google login authentication using server-side flow
+    const openGoogleLoginPage = useCallback(() => {
+        const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
+        const redirectUri = 'http://127.0.0.1:8000/accounts/google/login/callback/';
+
+        const scope = [
+            'https://www.googleapis.com/auth/userinfo.email',
+            'https://www.googleapis.com/auth/userinfo.profile'
+        ].join(' ');
+
+        const params = {
+            response_type: 'code',
+            client_id: GOOGLE_CLIENT_ID,
+            redirect_uri: `${redirectUri}`,
+            prompt: 'select_account',
+            access_type: 'offline',
+            scope
+        };
+
+        const urlParams = new URLSearchParams(params).toString();
+        window.location = `${googleAuthUrl}?${urlParams}`;
+    }, []);
 
 
-export default class NavContainer extends Component {
-    render() {
-        return (
-            <nav id="navbar">
-                <div className="navbar navbar-expand-md navbar-dark bg-dark">
-                    <a className="navbar-brand flex-shrink-0 order-md-1 ms-2 me-1 d-flex justify-content-center align-items-center"
-                        href="/">
-                        <img className="logo"
-                            src="../../static/images/logo.png" alt="" />
-                    </a>
 
-                    <button className="navbar-toggler ms-auto order-md-3" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
 
-                    {/* Account */}
-                    <div className="order-md-4 mx-2 dropdown fs-5">
-                        <a href="" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"><i
-                            className="fas fa-user-circle fa-2x text-white-50"></i></a>
-                        <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="dropdownMenuLink">
-                            <li><a className="dropdown-item" href="{% url 'courses:login' %}">Login</a></li>
+    return (
+        <nav id="navbar">
+            <div className="navbar navbar-expand-md navbar-dark bg-dark">
+                <a className="navbar-brand flex-shrink-0 order-md-1 ms-2 me-1 d-flex justify-content-center align-items-center"
+                    href="/">
+                    <img className="logo"
+                        src="../../static/images/logo.png" alt="" />
+                </a>
 
-                        </ul>
-                    </div>
-                    {/* Main Menu */}
-                    <div className="collapse navbar-collapse order-md-2 ms-2" id="navbarNav">
-                        <ul className="navbar-nav">
-                            <li className=" nav-item px-sm-2">
-                                <a className=" nav-link navbar-text" id="home" href="/">Home</a>
-                            </li>
-                            <li className="nav-item px-sm-2">
-                                <a className="nav-link navbar-text " id='favorite' href="/favorite">Favorite</a>
-                            </li>
+                <button className="navbar-toggler ms-auto order-md-3" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
 
-                            <li className="nav-item px-sm-2">
-                                <a className="nav-link navbar-text " id="suggest" href="/suggest-course">Suggest
-                                    a
-                                    Course</a>
-                            </li>
-                            <li className="nav-item px-sm-2">
-                                <a className="nav-link navbar-text " id="about" href="/about">About</a>
-                            </li>
-                        </ul>
+                {/* Account */}
+                <div className="order-md-4 mx-2 dropdown fs-5">
+                    <a href="" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"><i
+                        className="fas fa-user-circle fa-2x text-white-50"></i></a>
+                    <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+                        <li>
+                            <a className="dropdown-item" href="{% provider_login_url 'google' %}">Login</a>
+                            <GoogleButton
+                                onClick={openGoogleLoginPage}
+                                label="Sign in with Google" />
 
-                    </div>
+                        </li>
+
+                    </ul>
                 </div>
-            </nav>
+                {/* Main Menu */}
+                <div className="collapse navbar-collapse order-md-2 ms-2" id="navbarNav">
+                    <ul className="navbar-nav">
+                        <li className=" nav-item px-sm-2">
+                            <a className=" nav-link navbar-text" id="home" href="/">Home</a>
+                        </li>
+                        <li className="nav-item px-sm-2">
+                            <a className="nav-link navbar-text " id='favorite' href="/favorite">Favorite</a>
+                        </li>
+
+                        <li className="nav-item px-sm-2">
+                            <a className="nav-link navbar-text " id="suggest" href="/suggest-course">Suggest
+                                a
+                                Course</a>
+                        </li>
+                        <li className="nav-item px-sm-2">
+                            <a className="nav-link navbar-text " id="about" href="/about">About</a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
 
 
-        )
-    }
+    )
+
 
 }
+
+export default NavContainer;
