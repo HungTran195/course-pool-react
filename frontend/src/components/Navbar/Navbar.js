@@ -1,5 +1,5 @@
-import React, { Component, useCallback } from 'react';
-import Login from 'Authentication/Authenticate';
+import React from 'react';
+import Login from '../Authentication/Authenticate';
 
 const NavContainer = () => {
     return (
@@ -43,5 +43,4 @@ const NavContainer = () => {
         </nav>
     )
 }
-
 export default NavContainer;
