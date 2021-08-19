@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework import serializers
-from .utils import google_obtain_access_token, google_get_user_info, user_get_or_create, jwt_login, get_user_info
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
+from .utils import google_obtain_access_token, google_get_user_info, user_get_or_create, jwt_login, get_user_info
+# from .mixins import ApiAuthMixin, PublicApiMixin
 
 BASE_URL = 'http://127.0.0.1:8000'
 LOGIN_URL = f'{BASE_URL}/accounts/auth/login'
@@ -14,6 +16,7 @@ class GetUserApi(APIView):
     Determine current user. Return user name, email 
     and profile picture URL
     """
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         return Response(get_user_info(user=request.user))
@@ -25,6 +28,8 @@ class GoogleLoginAPI(APIView):
     Get token from request and obtain user information: email, 
     user name and profile picture url
     """
+    permission_classes = []
+
     class InputSerializer(serializers.Serializer):
         code = serializers.CharField(required=True)
 
@@ -33,7 +38,6 @@ class GoogleLoginAPI(APIView):
         input_serializer.is_valid(raise_exception=True)
 
         validated_data = input_serializer.validated_data
-
         code = validated_data.get('code')
 
         if not code:
