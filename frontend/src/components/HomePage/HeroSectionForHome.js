@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import { Grid, Button, ButtonGroup, Typography, AppBar, Toolbar, IconButton } from "@material-ui/core";
-import { Button, TextField, Input } from '@material-ui/core'
+import { Button, TextField, Input } from '@material-ui/core';
 export default class HeroSectionForHome extends Component {
     constructor(props) {
         super(props);

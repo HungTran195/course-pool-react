@@ -1,6 +1,7 @@
 from accounts.models import User
 from django.db.models import query
 from django.http import HttpResponse
+from django.conf import settings
 
 import requests
 from django.core.exceptions import ValidationError
@@ -11,8 +12,8 @@ from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.compat import set_cookie_with_token
 
 
-GOOGLE_OAUTH2_CLIENT_ID = '780984150057-rm7mulksf6mqa5m61frjel4b7aghso25.apps.googleusercontent.com'
-GOOGLE_OAUTH2_CLIENT_SECRET = 'oQZFUyvS9EahfWhaioEypASX'
+GOOGLE_OAUTH2_CLIENT_ID = settings.GOOGLE_OAUTH2_CLIENT_ID
+GOOGLE_OAUTH2_CLIENT_SECRET = settings.GOOGLE_OAUTH2_CLIENT_SECRET
 
 GOOGLE_ACCESS_TOKEN_OBTAIN_URL = 'https://oauth2.googleapis.com/token'
 GOOGLE_USER_INFO_URL = 'https://www.googleapis.com/oauth2/v3/userinfo'

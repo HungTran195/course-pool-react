@@ -3,7 +3,8 @@ import React, { useEffect, useCallback } from "react"
 import GoogleButton from 'react-google-button';
 import { useHistory } from 'react-router-dom';
 import Cookies from "js-cookie";
-const GOOGLE_CLIENT_ID = '780984150057-rm7mulksf6mqa5m61frjel4b7aghso25.apps.googleusercontent.com'
+
+const { REACT_APP_GOOGLE_CLIENT_ID } = process.env;
 
 const Login = () => {
     const history = useHistory();
@@ -19,7 +20,7 @@ const Login = () => {
 
         const params = {
             response_type: 'code',
-            client_id: GOOGLE_CLIENT_ID,
+            client_id: REACT_APP_GOOGLE_CLIENT_ID,
             redirect_uri: `${redirectUri}`,
             prompt: 'select_account',
             access_type: 'offline',
