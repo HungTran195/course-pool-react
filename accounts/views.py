@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
+from django.conf import settings
+from django.core.management.utils import get_random_secret_key
+
 from rest_framework.views import APIView
-from rest_framework import serializers
+from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
@@ -62,3 +65,20 @@ class GoogleLoginAPI(APIView):
         res = redirect(BASE_URL)
         res = jwt_login(response=res, user=user)
         return res
+
+
+class LogoutAPI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        """
+        Log out user by removing JWT cookie header
+        """
+        user = request.user
+        user.secret_key = get_random_secret_key()
+        user.clean()
+        user.save()
+
+        response = Response(status=status.HTTP_202_ACCEPTED)
+        response.delete_cookie(settings.JWT_AUTH['JWT_AUTH_COOKIE'])
+        return response

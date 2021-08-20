@@ -1,14 +1,32 @@
-import React, { useEffect, useCallback } from "react"
+import React, { useEffect, useState, useCallback } from "react"
+import { useHistory } from 'react-router-dom';
+
+import { Button } from '@material-ui/core';
 
 import GoogleButton from 'react-google-button';
-import { useHistory } from 'react-router-dom';
 import Cookies from "js-cookie";
 
 const { REACT_APP_GOOGLE_CLIENT_ID } = process.env;
 
 const Login = () => {
     const history = useHistory();
+    const [isLogin, setLogin] = useState(false)
+    const handleLogout = () => {
+        console.log("Logging out");
+        fetch("http://127.0.0.1:8000/accounts/auth/logout", {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(data => {
+                if (data.ok) console.log('Success Logout');
+                else console.log('Logout failed');
+            })
+    }
     // Handle google login authentication using server-side flow
+    // Ref: https://developers.google.com/identity/protocols/oauth2/web-server#obtainingaccesstokens
     const openGoogleLoginPage = useCallback(() => {
         const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
         const redirectUri = 'http://127.0.0.1:8000/accounts/auth/login/google/';
@@ -31,22 +49,25 @@ const Login = () => {
         window.location = `${googleAuthUrl}?${urlParams}`;
     }, []);
 
-
-    const checkLogin = () => {
+    useEffect(() => {
         fetch('http://127.0.0.1:8000/accounts/auth/get-current-user')
-            .then(response => response.json())
+            .then(response => {
+                console.log(response)
+
+                if (response.status === 401) {
+                    setLogin(false);
+                    console.log("not authorised");
+                    throw new Error('Unauthorised')
+                }
+                return response.json()
+            })
             .then(data => {
+                if (data) {
+                    setLogin(true)
+                }
                 console.log('Success:', data);
             })
-
-        console.log('check login');
-        const sessionCookie = Cookies.get('jwt_token');
-        if (sessionCookie) {
-            console.log('Cokkie ', sessionCookie)
-        }
-        return "Need to login"
-
-    }
+    }, []);
 
     return (
 
@@ -61,7 +82,7 @@ const Login = () => {
                         label="Sign in with Google" />
 
                 </li>
-                <li>{checkLogin()}</li>
+                <li>{isLogin ? <Button onClick={handleLogout}>Log out</Button> : ""}</li>
 
             </ul>
         </div>
