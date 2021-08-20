@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { render } from "react-dom";
-import HomePage from "./HomePage/HomePage";
-import FavoriteCoursePage from "./FavoritePage/FavoriteCoursePage";
-import SuggestCoursePage from "./SuggestCoursePage/SuggestCoursePage";
-import NavContainer from "./Navbar/Navbar";
-import Footer from "./Footer/Footer"
+import HomePage from "./pages/Home/HomePage";
+import FavoriteCoursePage from "./pages/Favorite/FavoriteCoursePage";
+import SuggestCoursePage from "./pages/SuggestCourse/SuggestCoursePage";
+import AboutPage from "./pages/About/AboutPage";
+import NavContainer from "./components/Navbar/Navbar";
+import NotFoundPage from "./pages/not-found/NotFoundPage"
+import Footer from "./components/Footer/Footer"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
 export default class App extends Component {
     constructor(props) {
         super(props);
@@ -15,12 +17,15 @@ export default class App extends Component {
         return (
             <>
                 <NavContainer />
-
                 <Router>
                     <Switch>
                         <Route exact path="/" component={HomePage} />
                         <Route exact path="/favorite" component={FavoriteCoursePage} />
                         <Route exact path="/suggest-course" component={SuggestCoursePage} />
+                        <Route exact path="/about" component={AboutPage} />
+                        {/* <Route exact path="/login" />
+                        <Route exact path="/register" /> */}
+                        <Router component={NotFoundPage} />
 
                     </Switch>
                 </Router>
@@ -29,5 +34,4 @@ export default class App extends Component {
         );
     }
 }
-const appDiv = document.getElementById("app");
-render(<App />, appDiv);
+

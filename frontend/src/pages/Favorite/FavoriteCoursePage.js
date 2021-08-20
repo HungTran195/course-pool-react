@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import HeroSectionForFavorite from "./HeroSectionForFavorite"
-import CourseCard from "../CourseCard/CourseCard";
-import Spinner from "../Spinner/Spinner";
+import CourseCard from "../../components/CourseCard/CourseCard";
+import Spinner from "../../components/Spinner/Spinner";
 
 export default class FavoriteCoursePage extends Component {
     constructor(props) {

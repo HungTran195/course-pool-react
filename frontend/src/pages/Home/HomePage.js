@@ -1,9 +1,7 @@
 import React, { Component, useEffect } from "react";
-import CourseCard from "../CourseCard/CourseCard";
 import HeroSectionForHome from "./HeroSectionForHome";
-import Spinner from "../Spinner/Spinner"
-import { Grid, Button, ButtonGroup, Typography, AppBar, Toolbar, IconButton } from "@material-ui/core";
-
+import CourseCard from "../../components/CourseCard/CourseCard";
+import Spinner from "../../components/Spinner/Spinner";
 
 export default class HomePage extends Component {
 	constructor(props) {
