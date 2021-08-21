@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useCallback } from "react"
-const { REACT_APP_GOOGLE_CLIENT_ID } = process.env;
+const { REACT_APP_GOOGLE_CLIENT_ID, REACT_APP_BASE_URL } = process.env;
 
 // Handle google login authentication using server-side flow
 // Ref: https://developers.google.com/identity/protocols/oauth2/web-server#obtainingaccesstokens
 const GoogleLogin = () => {
     const googleAuthUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
-    const redirectUri = 'http://127.0.0.1:8000/accounts/auth/login/google/';
+    const redirectUri = `${REACT_APP_BASE_URL}/accounts/auth/login/google/`;
 
     const scope = [
         'https://www.googleapis.com/auth/userinfo.email',
