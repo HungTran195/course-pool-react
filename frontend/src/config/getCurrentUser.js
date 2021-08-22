@@ -23,8 +23,6 @@ const getCurrentUser = () => {
                         profilePicture: data.profile_picture,
                     }
                     setUser(new_user);
-                    console.log("USER", user);
-
                 }
                 console.log('Success:', data);
             })

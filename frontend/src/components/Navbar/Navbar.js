@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import getCurrentUser from '../../config/getCurrentUser';
-import Login from '../Authentication/Authenticate';
+import Login from '../Authentication/Login';
 import UserContext from '../UserContext';
 import { Button } from '@material-ui/core';
 const { REACT_APP_BASE_URL } = process.env;
@@ -13,10 +13,8 @@ const NavContainer = () => {
     const { user, setUser } = useContext(UserContext);
     if (user) {
         console.log("user authenticated");
-        console.log('picture ', user.profilePicture);
     }
     const signoutUser = () => {
-
         console.log("Logging out");
         fetch("http://127.0.0.1:8000/accounts/auth/logout", {
             method: 'POST',
@@ -39,7 +37,11 @@ const NavContainer = () => {
             <>
                 <a href="" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
 
-                    <img src={user.profilePicture} style={{ maxWidth: "40px" }} />
+                    <img src={user.profilePicture} style={{
+                        maxWidth: "45px",
+                        marginRight: '10px',
+                        borderRadius: '50%'
+                    }} />
                 </a>
                 <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="dropdownMenuLink">
                     <Button onClick={signoutUser}>Log out</Button>

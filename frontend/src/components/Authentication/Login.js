@@ -10,23 +10,6 @@ import UserContext from "../UserContext";
 import getCurrentUser from "../../config/getCurrentUser";
 
 const Login = () => {
-    // getCurrentUser();
-    console.log('Authenticate')
-    const history = useHistory();
-    // const handleLogout = () => {
-    //     console.log("Logging out");
-    //     fetch("http://127.0.0.1:8000/accounts/auth/logout", {
-    //         method: 'POST',
-    //         credentials: 'same-origin',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     })
-    //         .then(data => {
-    //             if (data.ok) console.log('Success Logout');
-    //             else console.log('Logout failed');
-    //         })
-    // }
     const openGoogleLoginPage = useCallback(GoogleLogin, []);
 
     return (
