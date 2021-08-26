@@ -3,9 +3,9 @@ import { useHistory } from 'react-router-dom';
 import getCurrentUser from '../../config/getCurrentUser';
 import Login from '../Authentication/Login';
 import UserContext from '../UserContext';
-import { Button } from '@material-ui/core';
+import { Button, Avatar } from '@material-ui/core';
 const { REACT_APP_BASE_URL } = process.env;
-
+import "./navbar.css"
 const NavContainer = () => {
     getCurrentUser();
     const history = useHistory();
@@ -26,6 +26,7 @@ const NavContainer = () => {
             .then(data => {
                 if (data.ok) {
                     console.log('Success Logout', data);
+                    setUser(null);
                     window.location = REACT_APP_BASE_URL;
 
                 }
@@ -35,16 +36,15 @@ const NavContainer = () => {
     const userLoggedInView = () => {
         return (
             <>
-                <a href="" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                <Avatar alt={user.name} src={user.profilePicture} id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" />
+                <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end account-dropdown-min-width" aria-labelledby="dropdownMenuLink">
+                    <li className="d-flex justify-content-end py-1 pe-3 account-name">
+                        {user.name}
+                    </li>
+                    <li className="d-flex justify-content-end pe-3">
 
-                    <img src={user.profilePicture} style={{
-                        maxWidth: "45px",
-                        marginRight: '10px',
-                        borderRadius: '50%'
-                    }} />
-                </a>
-                <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="dropdownMenuLink">
-                    <Button onClick={signoutUser}>Log out</Button>
+                        <Button className="" color="primary" variant="contained" onClick={signoutUser}>Log out</Button>
+                    </li>
                 </ul>
             </>
         )
