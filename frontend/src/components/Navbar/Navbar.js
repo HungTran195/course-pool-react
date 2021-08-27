@@ -1,19 +1,34 @@
 import React, { useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import getCurrentUser from '../../config/getCurrentUser';
-import Login from '../Authentication/Login';
+import getCurrentUser from '../Authentication/getCurrentUser';
 import UserContext from '../UserContext';
 import { Button, Avatar } from '@material-ui/core';
-const { REACT_APP_BASE_URL } = process.env;
 import "./navbar.css"
+
 const NavContainer = () => {
     getCurrentUser();
     const history = useHistory();
 
     const { user, setUser } = useContext(UserContext);
     if (user) {
-        console.log("user authenticated");
+        console.log("User is ", user);
     }
+
+    const showLoginButton = () => {
+        return (
+            <>
+                <a href="" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"><i
+                    className="fas fa-user-circle fa-2x text-white-50"></i></a>
+                <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+                    <li className="d-flex justify-content-center align-items-end ">
+                        <Button className="w-75" variant="contained" color="primary" href="/login">
+                            Login
+                        </Button>
+                    </li>
+                </ul>
+            </>
+        )
+    };
     const signoutUser = () => {
         console.log("Logging out");
         fetch("http://127.0.0.1:8000/accounts/auth/logout", {
@@ -27,23 +42,23 @@ const NavContainer = () => {
                 if (data.ok) {
                     console.log('Success Logout', data);
                     setUser(null);
-                    window.location = REACT_APP_BASE_URL;
+                    history.push('/login');
 
                 }
                 else console.log('Logout failed');
             })
     }
-    const userLoggedInView = () => {
+    const showAvatar = () => {
         return (
             <>
                 <Avatar alt={user.name} src={user.profilePicture} id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" />
                 <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end account-dropdown-min-width" aria-labelledby="dropdownMenuLink">
-                    <li className="d-flex justify-content-end py-1 pe-3 account-name">
+                    <li className="d-flex justify-content-center py-1 account-name">
                         {user.name}
                     </li>
-                    <li className="d-flex justify-content-end pe-3">
+                    <li className="d-flex justify-content-center">
 
-                        <Button className="" color="primary" variant="contained" onClick={signoutUser}>Log out</Button>
+                        <Button color="primary" variant="contained" onClick={signoutUser}>Log out</Button>
                     </li>
                 </ul>
             </>
@@ -58,14 +73,16 @@ const NavContainer = () => {
                         src="../../static/images/logo.png" alt="" />
                 </a>
 
+                {/* Button toggle navbar menu in mobile window size */}
                 <button className="navbar-toggler ms-auto order-md-3" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                     aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
 
+                {/* Avatar of user */}
                 <div className="order-md-4 mx-2 dropdown fs-5">
-                    {user ? userLoggedInView() : <Login />}
+                    {user ? showAvatar() : showLoginButton()}
                 </div>
 
 

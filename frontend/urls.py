@@ -5,4 +5,6 @@ urlpatterns = [
     path('favorite', index),
     path('suggest-course', index),
     path('about', index),
+    path('login', index),
+    path('signup', index),
 ]

@@ -1,3 +1,7 @@
+/* 
+  Custom Google button styles
+  Ref: https://developers.google.com/identity/sign-in/web/build-button
+*/
 #customBtn {
     display: inline-block;
     background: #4285F4;
@@ -28,6 +32,5 @@ span.buttonText {
   padding: 0;
   font-size: 14px;
   font-weight: bold;
-  /* Use the Roboto font that is loaded in the <head> */
   font-family: 'Roboto', sans-serif;
 }
