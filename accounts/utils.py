@@ -125,7 +125,7 @@ def get_user_info(*, user: User):
     }
 
 
-def jwt_response_payload_handler(token, user=None, request=None):
+def jwt_response_payload_handler(token, user=None, request=None, *args, **kwargs):
     """
     Creates a response payload instance that will get passed to authentication response serializer
     """

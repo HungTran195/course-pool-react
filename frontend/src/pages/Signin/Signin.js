@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import CustomGoogleButton from '../../components/Authentication/GoogleLogin';
 import UserContext from '../../components/UserContext';
 import { useHistory } from 'react-router-dom';
@@ -8,12 +8,13 @@ const Signin = () => {
     const history = useHistory();
     const { user } = useContext(UserContext);
     const [userAuth, setUserAuth] = useState({
-        'username': '',
+        'email': '',
         'password': ''
     });
-    if (user) {
-        history.push('/');
-    }
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
     const handleChange = (event) => {
         const value = event.target.value;
         setUserAuth({
@@ -23,19 +24,24 @@ const Signin = () => {
     };
 
     const handleFormSubmit = (event) => {
-        console.log('username:', userAuth.username, 'pass: ', userAuth.password);
-        console.log(JSON.stringify(userAuth))
+        const data = { 'email': email, 'password': password };
         fetch(LOGIN_URL, {
             method: 'POST',
             credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(userAuth),
-        }).then(res => console.log("Login res", res));
-
-        // alert("Form submited " + userAuth.username + userAuth.password);
-
+            body: JSON.stringify(data),
+        }).then(res => {
+            console.log(res)
+            if (res.status === 201) {
+                console.log('URL', REACT_APP_BASE_URL);
+                window.location = REACT_APP_BASE_URL;
+            }
+            else {
+                throw new Error('Wrong email or password');
+            }
+        });
         event.preventDefault();
     };
     return (
@@ -56,7 +62,7 @@ const Signin = () => {
                                     className="fa fa-envelope"></span></div>
 
                                 <input className=" form-control" autoCapitalize="none" id="Email address" type=" text"
-                                    name="username" placeholder="Username" required onChange={handleChange} />
+                                    name="email" placeholder="Email address" required value={email} onChange={e => setEmail(e.target.value)} />
                             </div>
                             {/* Password */}
                             <div className="form-group mb-4">
@@ -64,7 +70,7 @@ const Signin = () => {
                                     <span className="fa fa-lock"></span>
                                 </div>
                                 <input className=" form-control" id="id_password" type="password" name="password"
-                                    placeholder="Password" required onChange={handleChange} />
+                                    placeholder="Password" required value={password} onChange={e => setPassword(e.target.value)} />
                             </div>
 
                             {/* <div className="form-group">
