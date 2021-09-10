@@ -18,8 +18,10 @@ GOOGLE_OAUTH2_CLIENT_SECRET = settings.GOOGLE_OAUTH2_CLIENT_SECRET
 GOOGLE_ACCESS_TOKEN_OBTAIN_URL = 'https://oauth2.googleapis.com/token'
 GOOGLE_USER_INFO_URL = 'https://www.googleapis.com/oauth2/v3/userinfo'
 
+DEFAULT_PROFILE_PICTURE_URL = ''
 
-def jwt_login(*, response: HttpResponse, user: User) -> HttpResponse:
+
+def jwt_login(response: HttpResponse, user: User) -> HttpResponse:
     """
     Set JWT token and send token to client as HttpOnly Cookie
     """
@@ -61,7 +63,7 @@ def google_obtain_access_token(code, redirect_uri):
 
 def google_get_user_info(access_token):
     """
-    Get user infor from google API using access token
+    Get user information from google API using access token
     Ref: https://www.oauth.com/oauth2-servers/signing-in-with-google/verifying-the-user-info/       
     """
     response = requests.get(
@@ -97,6 +99,7 @@ def user_create(profile_data, password=None, **extra_fields):
 
     user.full_clean()
     user.save()
+
     return user
 
 
@@ -110,8 +113,8 @@ def user_get_or_create(profile_data):
 
     if user:
         return user[0]
-
-    return user_create(profile_data)
+    new_user = user_create(profile_data)
+    return new_user
 
 
 def get_user_info(*, user: User):
@@ -121,7 +124,7 @@ def get_user_info(*, user: User):
     return {
         'name': user.name,
         'email': user.email,
-        'profile_picture': user.picture_url
+        'profile_image': user.profile_image
     }
 
 
@@ -133,3 +136,16 @@ def jwt_response_payload_handler(token, user=None, request=None, *args, **kwargs
         'token': token,
         'me': get_user_info(user=user),
     }
+
+
+def create_profile_data(first_name, last_name, email, profile_pictue=None):
+    if not profile_pictue:
+        profile_pictue = ''
+
+    profile_data = {
+        'email': email,
+        'first_name': first_name,
+        'last_name': last_name,
+        'picture_url': profile_pictue
+    }
+    return profile_data

@@ -1,6 +1,53 @@
-import React from 'react';
-
+import React, { useState, useEffect } from 'react';
+const { REACT_APP_BASE_URL } = process.env;
+const SIGNUP_URL = REACT_APP_BASE_URL + '/accounts/auth/signup';
 const Signup = () => {
+    const initialValues = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password1: '',
+        password2: '',
+    };
+    const [user, setUser] = useState(initialValues);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setUser({
+            ...user,
+            [name]: value,
+        });
+    };
+
+    const handleFormSubmit = () => {
+        const newUser = {
+            'first_name': user.firstName,
+            'last_name': user.lastName,
+            'email': user.email,
+            'password': user.password1
+        };
+
+        if (user.password1 !== user.password2) {
+            // TODO: display error message
+            console.log('Passwords do not match')
+        }
+        else {
+            fetch(SIGNUP_URL, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newUser),
+            }).then(res => {
+                if (res.status === 201) {
+                    window.location = REACT_APP_BASE_URL    
+                }
+                else return res.json()
+            }).then(data => console.log(data));
+        }
+    }
+
     return (
         <div className="container text-light py-2">
             <div className="row d-flex justify-content-center">
@@ -11,37 +58,35 @@ const Signup = () => {
                         </div>
                         <h2 className="text-center pt-3 pb-md-4 login-title">Register</h2>
 
-                        <form className="form login-form" method="POST">
+                        <form className="form login-form" onSubmit={handleFormSubmit}>
                             <div className="row">
                                 <div className="col form-group mb-3">
-                                    <input className="form-control ps-1" id="id_first_name" type="text" name="first_name"
-                                        placeholder="First name" />
+                                    <input className="form-control ps-1" type="text" name="firstName" autoComplete="given-name"
+                                        placeholder="First name" required value={user.firstName} onChange={handleInputChange} />
                                 </div>
 
                                 <div className="col form-group mb-3">
-                                    <input className="form-control ps-1" id="id_last_name" type="text" name="last_name"
-                                        placeholder="Last Name" />
+                                    <input className="form-control ps-1" type="text" name="lastName" autoComplete="family-name"
+                                        placeholder="Last Name" required value={user.lastName} onChange={handleInputChange} />
                                 </div>
                             </div>
                             <div className="form-group mb-3">
                                 <div className="icon d-flex justify-content-center align-items-center"><span
                                     className="fa fa-envelope"></span></div>
-                                <input className="form-control" id="id_email_address" type="text" name="email"
-                                    placeholder="Email Address" required />
+                                <input className="form-control" type="text" name="email" autoComplete="email"
+                                    placeholder="Email Address" required value={user.email} onChange={handleInputChange} />
                             </div>
                             <div className="form-group mb-4">
                                 <div className="icon d-flex justify-content-center align-items-center">
                                     <span className="fa fa-lock"></span>
                                 </div>
-                                <input className="form-control" autoComplete="new-password" id="id_password1" type="password"
-                                    name="password1" placeholder="Password" aria-autocomplete="list" required />
+                                <input className="form-control" type="password" name="password1" placeholder="Password" minLength="8" required value={user.password1} onChange={handleInputChange} />
                             </div>
                             <div className="form-group mb-4">
                                 <div className="icon d-flex justify-content-center align-items-center">
                                     <span className="fa fa-lock"></span>
                                 </div>
-                                <input className=" form-control" autoComplete="new-password" id="id_password2" type="password"
-                                    name="password2" placeholder="Confirm Password" required />
+                                <input className=" form-control" type="password" name="password2" placeholder="Confirm Password" minLength="8" required value={user.password2} onChange={handleInputChange} />
                             </div>
 
 

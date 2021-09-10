@@ -12,15 +12,16 @@ class User(AbstractUser):
     and secret key for verification
     """
     username = None
-
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
     email = models.EmailField(unique=True, db_index=True)
-    picture_url = models.URLField(
+    profile_image = models.URLField(
         default=DEFAULT_PROFILE_PICTURE_URL, null=True, blank=True)
     secret_key = models.CharField(
         max_length=255, default=get_random_secret_key)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ["first_name", "last_name"]
 
     objects = CustomUserManager()
 

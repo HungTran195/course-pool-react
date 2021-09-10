@@ -19,7 +19,7 @@ class UserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         (_('Personal info'), {
-         'fields': ('first_name', 'last_name', 'picture_url')}),
+         'fields': ('first_name', 'last_name', 'profile_image')}),
         (_('Permissions'), {'fields': (
             'is_active',
             'is_staff',
@@ -30,7 +30,7 @@ class UserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'first_name', 'last_name', 'picture_url', 'password1', 'password2', 'is_staff', 'is_active'),
+            'fields': ('email', 'first_name', 'last_name', 'profile_image', 'password1', 'password2', 'is_staff', 'is_active'),
         }),
     )
     ordering = ('email', )

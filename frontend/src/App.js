@@ -4,7 +4,7 @@ import FavoriteCoursePage from "./pages/Favorite/FavoriteCoursePage";
 import SuggestCoursePage from "./pages/SuggestCourse/SuggestCoursePage";
 import AboutPage from "./pages/About/AboutPage";
 import NavContainer from "./components/Navbar/Navbar";
-import Signin from './pages/Signin/SignIn';
+import SignIn from './pages/Signin/SignIn';
 import Signup from "./pages/Signup/Signup";
 import NotFoundPage from "./pages/Not-found/NotFoundPage"
 import Footer from "./components/Footer/Footer"
@@ -23,7 +23,7 @@ const App = () => {
                     <Route exact path="/favorite" component={FavoriteCoursePage} />
                     <Route exact path="/suggest-course" component={SuggestCoursePage} />
                     <Route exact path="/about" component={AboutPage} />
-                    <Route exact path="/login" component={Signin} />
+                    <Route exact path="/login" component={SignIn} />
                     <Route exact path="/signup" component={Signup} />
                     <Router component={NotFoundPage} />
 

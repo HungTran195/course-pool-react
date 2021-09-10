@@ -1,17 +1,22 @@
+from accounts.serializers import UserSerializer
+from accounts.models import User
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.core.management.utils import get_random_secret_key
+from django.contrib.auth import get_user_model
 
+from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 from .utils import google_obtain_access_token, google_get_user_info, user_get_or_create, jwt_login, get_user_info
-# from .mixins import ApiAuthMixin, PublicApiMixin
 
 BASE_URL = 'http://127.0.0.1:8000'
 LOGIN_URL = f'{BASE_URL}/accounts/auth/login'
+
+UserModel = get_user_model()
 
 
 class GetUserApi(APIView):
@@ -68,12 +73,12 @@ class GoogleLoginAPI(APIView):
 
 
 class LogoutAPI(APIView):
+    """
+    Log out user by removing JWT cookie header
+    """
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        """
-        Log out user by removing JWT cookie header
-        """
         user = request.user
         user.secret_key = get_random_secret_key()
         user.clean()
@@ -82,3 +87,24 @@ class LogoutAPI(APIView):
         response = Response(status=status.HTTP_202_ACCEPTED)
         response.delete_cookie(settings.JWT_AUTH['JWT_AUTH_COOKIE'])
         return response
+
+
+class SignUpUserApi(CreateAPIView):
+    """
+    Create new user with email and password and log user in
+    """
+    serializer_class = UserSerializer
+    permission_classes = []
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+
+        email = serializer.data['email']
+        user = UserModel.objects.get(email=email)
+
+        res = Response(serializer.data, status=status.HTTP_201_CREATED)
+        res = jwt_login(response=res, user=user)
+
+        return res

@@ -4,7 +4,7 @@ import UserContext from '../../components/UserContext';
 import { useHistory } from 'react-router-dom';
 const { REACT_APP_BASE_URL } = process.env
 const LOGIN_URL = REACT_APP_BASE_URL + '/accounts/auth/login'
-const Signin = () => {
+const SignIn = () => {
     const history = useHistory();
     const { user } = useContext(UserContext);
     const [userAuth, setUserAuth] = useState({
@@ -101,4 +101,4 @@ const Signin = () => {
     )
 };
 
-export default Signin;
+export default SignIn;
