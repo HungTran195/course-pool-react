@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { notifyError } from '../../utils/notifications';
 const { REACT_APP_BASE_URL } = process.env;
 const SIGNUP_URL = REACT_APP_BASE_URL + '/accounts/auth/signup';
 const Signup = () => {
@@ -28,8 +29,7 @@ const Signup = () => {
         };
 
         if (user.password1 !== user.password2) {
-            // TODO: display error message
-            console.log('Passwords do not match')
+            notifyError('Passwords do not match');
         }
         else {
             fetch(SIGNUP_URL, {

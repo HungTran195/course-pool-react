@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import CustomGoogleButton from '../../components/Authentication/GoogleLogin';
 import UserContext from '../../components/UserContext';
 import { useHistory } from 'react-router-dom';
+import { notifyError } from '../../utils/notifications';
 const { REACT_APP_BASE_URL } = process.env
 const LOGIN_URL = REACT_APP_BASE_URL + '/accounts/auth/login'
 const SignIn = () => {
@@ -22,7 +23,9 @@ const SignIn = () => {
             [event.target.name]: value
         })
     };
-
+    useEffect(()=>{
+        console.log('toast1');
+    },[])
     const handleFormSubmit = (event) => {
         const data = { 'email': email, 'password': password };
         fetch(LOGIN_URL, {
@@ -39,7 +42,7 @@ const SignIn = () => {
                 window.location = REACT_APP_BASE_URL;
             }
             else {
-                throw new Error('Wrong email or password');
+                notifyError('Wrong email or password');
             }
         });
         event.preventDefault();

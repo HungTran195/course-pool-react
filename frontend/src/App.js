@@ -10,6 +10,8 @@ import NotFoundPage from "./pages/Not-found/NotFoundPage"
 import Footer from "./components/Footer/Footer"
 import UserContext from "./components/UserContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
     const [user, setUser] = useState(null);
@@ -30,6 +32,17 @@ const App = () => {
                 </Switch>
                 <Footer />
             </UserContext.Provider>
+            <ToastContainer
+                position="top-center"
+                autoClose={3000}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnVisibilityChange
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover={false}
+            />
         </Router>
     );
 }
