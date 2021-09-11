@@ -44,8 +44,14 @@ const Signup = () => {
                     window.location = REACT_APP_BASE_URL    
                 }
                 else return res.json()
-            }).then(data => console.log(data));
+            }).then(data => {
+                let keys = Object.keys(data);
+                keys.forEach((key)=>{
+                    notifyError(data[key])                    
+                });
+            });
         }
+        event.preventDefault();
     }
 
     return (

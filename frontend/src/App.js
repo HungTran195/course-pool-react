@@ -16,6 +16,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const App = () => {
     const [user, setUser] = useState(null);
     return (
+        <>
         <Router>
             <UserContext.Provider value={{ user, setUser }}>
 
@@ -32,7 +33,9 @@ const App = () => {
                 </Switch>
                 <Footer />
             </UserContext.Provider>
-            <ToastContainer
+           
+        </Router>
+        <ToastContainer
                 position="top-center"
                 autoClose={3000}
                 newestOnTop
@@ -43,7 +46,7 @@ const App = () => {
                 draggable
                 pauseOnHover={false}
             />
-        </Router>
+        </>
     );
 }
 

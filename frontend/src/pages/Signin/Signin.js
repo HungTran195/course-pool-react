@@ -23,9 +23,7 @@ const SignIn = () => {
             [event.target.name]: value
         })
     };
-    useEffect(()=>{
-        console.log('toast1');
-    },[])
+    
     const handleFormSubmit = (event) => {
         const data = { 'email': email, 'password': password };
         fetch(LOGIN_URL, {
