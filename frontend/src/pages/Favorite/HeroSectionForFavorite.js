@@ -20,10 +20,10 @@ const HeroSectionForFavorite = ({hasUser, hasFavoriteCourse}) => {
                     <h1 className="mb-3">Your Favorites</h1>
                 {isLogIn ? (
                     <>
-                        {hasFavoriteCourse ? (
-                            <p className="fs-6">Click the <BookmarkIcon/> icon below courses to set them as your favorites </p>)
+                        {hasFavoriteCourse ? null
                             : ( <p className="fs-5">Seems like you don't have any favorite Course</p> )
                         }
+                        <p className="fs-6">Click the <BookmarkIcon/> icon below courses to set them as your favorites </p>
                     </>)
                     : (
                         <div>

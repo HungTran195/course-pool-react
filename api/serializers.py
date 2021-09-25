@@ -1,7 +1,4 @@
-from accounts.models import User
-from django.db.models import fields
 from rest_framework import serializers
-from rest_framework.utils import field_mapping
 from .models import Course, Your_Course
 from django.contrib.auth import get_user_model
 

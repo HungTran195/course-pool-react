@@ -1,23 +1,23 @@
-from accounts import serializers
-from django.db import reset_queries
-from django.db.models import query
-from django.shortcuts import render
 from rest_framework import generics, status
-import rest_framework
-from rest_framework import permissions
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from .serializers import CourseSerializer, FavoriteCourse
 from .models import Course, Your_Course
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Q
 
 
 class CourseView(generics.ListAPIView):
-    queryset = Course.objects.all()
+
     serializer_class = CourseSerializer
 
-    def get(self, request):
-        queryset = self.filter_queryset(self.get_queryset())
+    def get(self, request, *args, **kwargs):
+        queryset = Course.objects.all()
+
+        search_keywords = request.query_params.get('keywords')
+        if search_keywords is not None:
+            queryset = queryset.filter(
+                Q(course_name__icontains=search_keywords) | Q(tags__icontains=search_keywords))
+
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
