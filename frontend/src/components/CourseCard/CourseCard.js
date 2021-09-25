@@ -9,7 +9,7 @@ const getTags = (tags) => {
 
 
 const Card = ({ props }) => {
-    const { id, course_name, author, thumbnail_url, url, description, tags } = props;
+    const { id, course_name, author, thumbnail_url, url, description, tags, is_favorite } = props;
 
     return (
         <div className="course-card position-relative ">
@@ -31,7 +31,7 @@ const Card = ({ props }) => {
             <div className="description">
                 <p>{description}</p>
             </div>
-            <ButtonInCard courseID={id} courseURL={url} />
+            <ButtonInCard courseID={id} courseURL={url} isFavoriteID={is_favorite} />
         </div>
 
     )

@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState} from 'react';
+import { useHistory } from 'react-router';
+import { UserContext } from '../../components/UserContext';
 import { notifyError } from '../../utils/notifications';
+
 const { REACT_APP_BASE_URL } = process.env;
 const SIGNUP_URL = REACT_APP_BASE_URL + '/accounts/auth/signup';
+
 const Signup = () => {
     const initialValues = {
         firstName: '',
@@ -10,25 +14,29 @@ const Signup = () => {
         password1: '',
         password2: '',
     };
-    const [user, setUser] = useState(initialValues);
-
+    const history = useHistory();
+    const [newUser, setNewUser] = useState(initialValues);
+    const {user} = useContext(UserContext)
+    if(user.email){
+        history.push('/')
+    }
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setUser({
-            ...user,
+        setNewUser({
+            ...newUser,
             [name]: value,
         });
     };
 
-    const handleFormSubmit = () => {
+    const handleFormSubmit = (e) => {
         const newUser = {
-            'first_name': user.firstName,
-            'last_name': user.lastName,
-            'email': user.email,
-            'password': user.password1
+            'first_name': newUser.firstName,
+            'last_name': newUser.lastName,
+            'email': newUser.email,
+            'password': newUser.password1
         };
 
-        if (user.password1 !== user.password2) {
+        if (newUser.password1 !== newUser.password2) {
             notifyError('Passwords do not match');
         }
         else {
@@ -41,7 +49,7 @@ const Signup = () => {
                 body: JSON.stringify(newUser),
             }).then(res => {
                 if (res.status === 201) {
-                    window.location = REACT_APP_BASE_URL    
+                    window.location = REACT_APP_BASE_URL;
                 }
                 else return res.json()
             }).then(data => {
@@ -51,7 +59,7 @@ const Signup = () => {
                 });
             });
         }
-        event.preventDefault();
+        e.preventDefault();
     }
 
     return (

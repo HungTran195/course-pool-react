@@ -1,28 +1,23 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, {useContext, useState} from 'react';
 import CustomGoogleButton from '../../components/Authentication/GoogleLogin';
-import UserContext from '../../components/UserContext';
 import { useHistory } from 'react-router-dom';
 import { notifyError } from '../../utils/notifications';
-const { REACT_APP_BASE_URL } = process.env
-const LOGIN_URL = REACT_APP_BASE_URL + '/accounts/auth/login'
+import { UserContext } from '../../components/UserContext';
+
+const { REACT_APP_BASE_URL } = process.env;
+const LOGIN_URL = REACT_APP_BASE_URL + '/accounts/auth/login';
+
+
 const SignIn = () => {
     const history = useHistory();
-    const { user } = useContext(UserContext);
-    const [userAuth, setUserAuth] = useState({
-        'email': '',
-        'password': ''
-    });
+    const {user} = useContext(UserContext);
 
+    if(user.email){
+        history.push('/')
+    }
+        
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
-    const handleChange = (event) => {
-        const value = event.target.value;
-        setUserAuth({
-            ...userAuth,
-            [event.target.name]: value
-        })
-    };
     
     const handleFormSubmit = (event) => {
         const data = { 'email': email, 'password': password };
@@ -34,10 +29,8 @@ const SignIn = () => {
             },
             body: JSON.stringify(data),
         }).then(res => {
-            console.log(res)
             if (res.status === 201) {
-                console.log('URL', REACT_APP_BASE_URL);
-                window.location = REACT_APP_BASE_URL;
+                history.push('/');
             }
             else {
                 notifyError('Wrong email or password');
@@ -74,7 +67,8 @@ const SignIn = () => {
                                     placeholder="Password" required value={password} onChange={e => setPassword(e.target.value)} />
                             </div>
 
-                            {/* <div className="form-group">
+                            {/* TODO reset password
+                            <div className="form-group">
                                 <div className="w-100 d-flex justify-content-end mb-3 ">
                                     <a href="{% url 'courses:password_reset' %}">Forgot Password?</a>
                                 </div>

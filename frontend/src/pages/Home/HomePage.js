@@ -1,60 +1,52 @@
-import React, { Component, useEffect } from "react";
-import HeroSectionForHome from "./HeroSectionForHome";
-import CourseCard from "../../components/CourseCard/CourseCard";
-import Spinner from "../../components/Spinner/Spinner";
+import React, { useContext, useEffect, useState } from 'react';
+import HeroSectionForHome from './HeroSectionForHome';
+import CourseCard from '../../components/CourseCard/CourseCard';
+import Spinner from '../../components/Spinner/Spinner';
+import { notifyError } from '../../utils/notifications';
+import { UserContext } from '../../components/UserContext';
 
-export default class HomePage extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			allCourse: [],
-			pageName: "HomePage",
-			isFetching: false,
-		};
-		this.fetchAllCourse = this.fetchAllCourse.bind(this);
-	};
+const HomePage = () => {
+	const [courses, setCourses]= useState([]);
+	const [isFetching, setIsFetching] = useState(false);
+	const {user} = useContext(UserContext);
+	useEffect(() => {
+		document.title = 'Course Pool | Home Page'
+		fetchAllCourses();
+	}, [user]);
 
-	fetchAllCourse() {
-		this.setState({ isFetching: true });
-		fetch("api/view-course")
-			.then(response => response.json())
+	const fetchAllCourses = ()=> {
+		setIsFetching(true);
+
+		fetch('api/view-course')
+			.then(res => res.json())
 			.then(data => {
 				let courses = [];
-				for (let i = 0; i < data.length; i++) {
+				for (let i = 0; i < data.length; i++){
 					courses.push(data[i]);
 				}
-				this.setState({
-					allCourse: courses,
-					isFetching: false,
-				});
+				setCourses(courses);
+				setIsFetching(false);
 			})
-			.catch(error => {
-				console.log(error);
-				this.setState({ isFetching: true });
+			.catch(error =>{
+				notifyError('Cannot load courses from server');
+				setIsFetching(true);
+				throw new Error('Error') 
 			});
-	};
 
-	render() {
-		return (
-			<>
-				<HeroSectionForHome />
-				<div className="container">
-					<div>
-						{this.state.isFetching ? <Spinner /> : null}
-					</div>
-					<CourseCard allCourses={this.state.allCourse} />
+	}
+
+	return (
+		<>
+			<HeroSectionForHome />
+			<div className='container'>
+				<div>
+					{isFetching ? <Spinner /> : null}
 				</div>
-			</>
+				<CourseCard allCourses={courses} />
+			</div>
+		</>
 
-		)
-	}
-
-	componentDidMount() {
-		document.title = "Course Pool | Home Page"
-		this.fetchAllCourse();
-	}
-
-
+	)
 }
 
-
+export default HomePage;

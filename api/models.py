@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.deletion import CASCADE
 from accounts.models import User
 
 
@@ -22,10 +23,10 @@ class Course(models.Model):
 class Your_Course(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, null=True, blank=True)
-    course_id = models.IntegerField()
+    course = models.ForeignKey(Course, on_delete=CASCADE)
 
     def __str__(self):
-        return str(self.user) + ' - ' + str(self.course_id)
+        return str(self.user) + ' - ' + str(self.course)
 
 
 class Suggest_Course(models.Model):

@@ -1,60 +1,57 @@
-import React, { Component } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import HeroSectionForFavorite from "./HeroSectionForFavorite"
 import CourseCard from "../../components/CourseCard/CourseCard";
 import Spinner from "../../components/Spinner/Spinner";
+import {UserContext} from "../../components/UserContext";
 
-export default class FavoriteCoursePage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            pageName: "FavoritePage",
-            isFetching: false,
-            hasFavorites: false,
-            allCourse: [],
 
-        };
-        this.fetchAllCourse = this.fetchAllCourse.bind(this);
-    }
-
-    fetchAllCourse = () => {
-        this.setState({ isFetching: true });
-        fetch("api/view-course")
-            .then(response => response.json())
-            .then(data => {
+const FavoriteCoursePage = () =>{
+    const {user} = useContext(UserContext);
+    const [courses, setCourses]= useState([]);
+    const [isFetching, setIsFetching] = useState(false);
+    const [isLogIn, setIsLogIn] = useState(false);
+    
+    useEffect(() => {
+        document.title = "Course Pool | Favorite Courses";        
+        if(user.email){
+            setIsLogIn(true);
+            fetchFavoriteCourse();
+        }
+        else setIsLogIn(false);
+    }, [user]);
+  
+    const fetchFavoriteCourse = ()=> {
+		setIsFetching(true);
+        
+		fetch('api/get-favorite')
+			.then(res => res.json())
+			.then(data => {
+				
                 let courses = [];
-                for (let i = 0; i < data.length; i++) {
-                    courses.push(data[i]);
-                }
-                this.setState({
-                    allCourse: courses,
-                    hasFavorites: courses.length > 0,
-                    isFetching: false,
-                });
+				for (let i = 0; i < data.length; i++){
+					courses.push(data[i]);
+				}
+				setCourses(courses);
+				setIsFetching(false);
+			})
+			.catch(error =>{
+				notifyError(error);
+				setIsFetching(true);
+				throw new Error('Error') 
+			});
 
-
-            })
-            .catch(error => {
-                console.log(error);
-                this.setState({ isFetching: true });
-            });
-    }
-
-
-    render() {
-        return (
-            <>
-                <HeroSectionForFavorite pageState={this.state.hasFavorites} />
-                <div className="container">
-                    <div>
-                        {this.state.isFetching ? <Spinner /> : null}
-                    </div>
-                    <CourseCard allCourses={this.state.allCourse} />
+	}
+    
+    return (
+        <>
+            <HeroSectionForFavorite hasUser={isLogIn} hasFavoriteCourse = {courses.length > 0 ? true : false} />
+            <div className="container">
+                <div>
+                    {isFetching ? <Spinner /> : null}
                 </div>
-            </>
-        )
-    }
-    componentDidMount() {
-        document.title = "Course Pool | Favorite Courses";
-        this.fetchAllCourse();
-    }
+                <CourseCard allCourses={courses} />
+            </div>
+        </>
+    )
 }
+export default FavoriteCoursePage;

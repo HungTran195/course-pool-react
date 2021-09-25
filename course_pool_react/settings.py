@@ -155,6 +155,7 @@ AUTH_USER_MODEL = 'accounts.User'
 SITE_ID = 2
 
 JWT_EXPIRATION_DELTA_DEFAULT = 2.628e+6  # 1 month in seconds
+# JWT_EXPIRATION_DELTA_DEFAULT = 180  # in seconds
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(
         seconds=JWT_EXPIRATION_DELTA_DEFAULT

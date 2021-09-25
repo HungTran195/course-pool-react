@@ -1,18 +1,13 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import getCurrentUser from '../Authentication/getCurrentUser';
-import UserContext from '../UserContext';
+import {UserContext} from '../UserContext';
 import { Button, Avatar } from '@material-ui/core';
+
 import "./navbar.css"
 
 const NavContainer = () => {
-    getCurrentUser();
+    const { user, signOutUser } = useContext(UserContext);
     const history = useHistory();
-
-    const { user, setUser } = useContext(UserContext);
-    if (user) {
-        console.log("User is ", user);
-    }
 
     const showLoginButton = () => {
         return (
@@ -29,25 +24,7 @@ const NavContainer = () => {
             </>
         )
     };
-    const signoutUser = () => {
-        console.log("Logging out");
-        fetch("http://127.0.0.1:8000/accounts/auth/logout", {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(data => {
-                if (data.ok) {
-                    console.log('Success Logout', data);
-                    setUser(null);
-                    history.push('/login');
 
-                }
-                else console.log('Logout failed');
-            })
-    }
     const showAvatar = () => {
         return (
             <>
@@ -58,12 +35,13 @@ const NavContainer = () => {
                     </li>
                     <li className="d-flex justify-content-center">
 
-                        <Button color="primary" variant="contained" onClick={signoutUser}>Log out</Button>
+                        <Button color="primary" variant="contained" onClick={signOutUser}>Log out</Button>
                     </li>
                 </ul>
             </>
         )
     }
+
     return (
         <nav id="navbar">
             <div className="navbar navbar-expand-md navbar-dark bg-dark">
@@ -82,7 +60,7 @@ const NavContainer = () => {
 
                 {/* Avatar of user */}
                 <div className="order-md-4 mx-2 dropdown fs-5">
-                    {user ? showAvatar() : showLoginButton()}
+                    {user.email ? showAvatar() : showLoginButton()}
                 </div>
 
 
@@ -92,9 +70,13 @@ const NavContainer = () => {
                         <li className=" nav-item px-sm-2">
                             <a className=" nav-link navbar-text" id="home" href="/">Home</a>
                         </li>
-                        <li className="nav-item px-sm-2">
-                            <a className="nav-link navbar-text " id='favorite' href="/favorite">Favorite</a>
-                        </li>
+                        {user.email ?  (
+                            <li className="nav-item px-sm-2">
+                                <a className="nav-link navbar-text " id='favorite' href="/favorite">Favorite</a>
+                            </li>)
+                            : (null)
+                        }
+                        
 
                         <li className="nav-item px-sm-2">
                             <a className="nav-link navbar-text " id="suggest" href="/suggest-course">Suggest

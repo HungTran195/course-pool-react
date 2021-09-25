@@ -1,9 +1,50 @@
-import React from 'react';
+import React, { useState, useContext, useEffect} from 'react';
 import {
     FacebookShareButton, TwitterShareButton, RedditShareButton, WhatsappShareButton,
     FacebookIcon, TwitterIcon, RedditIcon, WhatsappIcon
 } from 'react-share'
-const ButtonInCard = ({ courseID, courseURL }) => {
+import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+import { UserContext } from '../UserContext';
+import { notifyError } from '../../utils/notifications';
+
+const {REACT_APP_BASE_URL} = process.env
+const TOGGLE_FAVORITE_URL = REACT_APP_BASE_URL + '/api/toggle-favorite'
+
+const ButtonInCard = ({ courseID, courseURL, isFavoriteID}) => {
+    const [isFavorite, setFavorite] = useState(true);
+    const {user} = useContext(UserContext);
+    useEffect(() => {
+        if(isFavoriteID){
+            setFavorite(true);
+        }
+        else setFavorite(false)
+    }, [isFavoriteID])
+    
+    const toggleFavorite= (e)=> {
+        if (user.email){
+            setFavorite(!isFavorite);
+            fetch(TOGGLE_FAVORITE_URL,{
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    'course': courseID
+                })
+            }).then(res => {
+                if (res.status !== 200) {
+                    notifyError()
+            }})
+            .catch(error =>{
+                console.log(error)
+				notifyError(); 
+            })
+        }
+
+    }
+
     return (
         <div className="d-flex justify-content-center align-items-center my-3">
             <div className='position-absolute bottom-0 my-2 d-flex align-items-center  w-100'>
@@ -49,10 +90,18 @@ const ButtonInCard = ({ courseID, courseURL }) => {
                     </div>
                 </div>
 
-                <div className="text-warning ms-auto me-3 toggle-favorite" id={`course-${courseID}`}><i
-                    className="fas fa-star fa-2x"></i>
-                </div>
-
+                {/* Add to favorite list */}
+                {user.email 
+                    ? <div 
+                        className="text-warning ms-auto me-3 toggle-favorite" 
+                        id={`course-${courseID}`}
+                        onClick={toggleFavorite}
+                        >
+                        {isFavorite 
+                            ? <BookmarkIcon fontSize = "large"/> 
+                            : <BookmarkBorderIcon fontSize = "large"/> }
+                    </div>
+                    : null }
             </div>
         </div>
 
