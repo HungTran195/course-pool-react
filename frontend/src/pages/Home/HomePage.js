@@ -4,10 +4,18 @@ import CourseCard from '../../components/CourseCard/CourseCard';
 import Spinner from '../../components/Spinner/Spinner';
 import { notifyError } from '../../utils/notifications';
 import { UserContext } from '../../components/UserContext';
+import {CourseContext} from '../../components/CourseContext';
 
 const HomePage = () => {
-	const [courses, setCourses]= useState([]);
-	const [isFetching, setIsFetching] = useState(false);
+	const {
+		courses,
+		setCourses,
+		searchKeywords,
+		searchResults,
+		isLoading,
+		setIsLoading,
+	} = useContext(CourseContext);
+
 	const {user} = useContext(UserContext);
 	useEffect(() => {
 		document.title = 'Course Pool | Home Page'
@@ -15,7 +23,7 @@ const HomePage = () => {
 	}, [user]);
 
 	const fetchAllCourses = ()=> {
-		setIsFetching(true);
+		setIsLoading(true);
 
 		fetch('api/view-course')
 			.then(res => res.json())
@@ -25,14 +33,13 @@ const HomePage = () => {
 					courses.push(data[i]);
 				}
 				setCourses(courses);
-				setIsFetching(false);
+				setIsLoading(false);
 			})
 			.catch(error =>{
 				notifyError('Cannot load courses from server');
-				setIsFetching(true);
+				setIsLoading(true);
 				throw new Error('Error') 
 			});
-
 	}
 
 	return (
@@ -40,9 +47,9 @@ const HomePage = () => {
 			<HeroSectionForHome />
 			<div className='container'>
 				<div>
-					{isFetching ? <Spinner /> : null}
+					{isLoading ? <Spinner /> : null}
 				</div>
-				<CourseCard allCourses={courses} />
+				<CourseCard allCourses={searchResults === undefined ? courses : searchResults} />
 			</div>
 		</>
 
