@@ -43,12 +43,31 @@ const HomePage = () => {
 	}
 
 	return (
-		<>
+		<> 
 			<HeroSectionForHome />
 			<div className='container'>
-				<div>
-					{isLoading ? <Spinner /> : null}
+				{isLoading ? <Spinner /> : null}
+				
+				<div className="d-flex flex-column align-items-center justify-content-center pt-4 pb-2">
+					{searchResults ? (
+						<>
+							<div>
+								<h3 className="text-light ">Search result for <span className="text-warning"> "{searchKeywords}" </span></h3>
+							</div>
+			
+							{searchResults.length == 0 ? (
+								<div>
+									<h3 className="text-light pt-2 fst-italic fw-bolder">Nothing found!</h3>
+								</div>
+							): null}
+							</>
+						)
+						:(
+							<h2 className="text-light text-center py-4">Top picks from us!</h2>)
+					}
 				</div>
+
+
 				<CourseCard allCourses={searchResults === undefined ? courses : searchResults} />
 			</div>
 		</>
