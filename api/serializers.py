@@ -1,5 +1,7 @@
+from django.db import models
+from django.db.models import fields
 from rest_framework import serializers
-from .models import Course, Your_Course
+from .models import Course, Suggest_Course, Your_Course
 from django.contrib.auth import get_user_model
 
 UserModel = get_user_model()
@@ -22,8 +24,14 @@ class CourseSerializer(serializers.ModelSerializer):
 
         return False
 
+class AddCourseSerializer(serializers.ModelSerializer):
 
-class FavoriteCourse(serializers.ModelSerializer):
+    class Meta:
+        model = Suggest_Course
+        fields =('name', 'email', 'course_name', 'course_url', 'description')
+
+
+class FavoriteCourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Your_Course
         fields = ('course', )

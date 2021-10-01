@@ -25,14 +25,8 @@ const HeroSectionForHome = () => {
             const queryParamsURL='?keywords=' + searchKeywords.toString();
             
             fetch(REACT_APP_BASE_URL + '/api/view-course/' + queryParamsURL)
-                .then(res => {
-                    console.log('res', res);
-                    if(res.status === 200){
-                        return res.json()
-                    }
-                    notifyError('Cannot get data from server');
-                }).then(data => {
-                    console.log(data)
+                .then(res => {return res.json()})
+                .then(data => {
                     let courses = [];
                     for(let i=0; i< data.length; i++){
                         courses.push(data[i]);
@@ -41,7 +35,7 @@ const HeroSectionForHome = () => {
                     setIsLoading(false);
 
                 }).catch(e =>{
-                    notifyError();
+                    notifyError('Cannot get data from server');
                 });
             }
         else setSearchResults(undefined);

@@ -36,7 +36,7 @@ const App = () => {
                         }
                         setUser(new_user);
                     }
-                })
+                });
         }
     }, [user])
     

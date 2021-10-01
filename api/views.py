@@ -1,9 +1,10 @@
-from rest_framework import generics, status
+from rest_framework import generics, serializers, status
 from rest_framework.response import Response
-from .serializers import CourseSerializer, FavoriteCourse
-from .models import Course, Your_Course
+from .serializers import CourseSerializer, FavoriteCourseSerializer, AddCourseSerializer
+from .models import Course, Suggest_Course, Your_Course
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
+from rest_framework.exceptions import ValidationError
 
 
 class CourseView(generics.ListAPIView):
@@ -37,21 +38,26 @@ class GetFavoriteCourseAPI(generics.ListAPIView):
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
-class AddNewCourseView(generics.ListAPIView):
-    queryset = Course.objects.all()
-    serializer_class = CourseSerializer
+class AddNewCourseView(generics.CreateAPIView):
+    queryset = Suggest_Course
+    serializer_class = AddCourseSerializer
 
-    # def get(self, request):
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
 
-    #     data = self.queryset.objects.filter(course_name__icontains='Java')
-    #     print(f'data {data}')
-    #     data = self.serializer_class(data).data
-    #     return Response(data, status=status.HTTP_200_OK)
+        serializer.is_valid(raise_exception=True)
+
+        course = Suggest_Course.objects.filter(
+            course_url=serializer.validated_data['course_url'])
+        if not course:
+            self.perform_create(serializer)
+
+        return Response(status=status.HTTP_201_CREATED)
 
 
 class ToggleFavoriteAPI(generics.ListCreateAPIView):
     queryset = Your_Course
-    serializer_class = FavoriteCourse
+    serializer_class = FavoriteCourseSerializer
     permissions_class = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):

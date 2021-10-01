@@ -9,7 +9,7 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.views import APIView
 from rest_framework import serializers, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from .utils import google_obtain_access_token, google_get_user_info, user_get_or_create, jwt_login, get_user_info
 
@@ -24,7 +24,7 @@ class GetUserApi(APIView):
     Determine current user. Return user name, email 
     and profile picture URL
     """
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, ]
 
     def get(self, request, *args, **kwargs):
         return Response(get_user_info(user=request.user))
@@ -94,7 +94,7 @@ class SignUpUserApi(CreateAPIView):
     Create new user with email and password and log user in
     """
     serializer_class = UserSerializer
-    permission_classes = []
+    permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
