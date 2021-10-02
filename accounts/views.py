@@ -1,3 +1,6 @@
+import re
+
+from django.http.response import JsonResponse
 from accounts.serializers import UserSerializer
 from accounts.models import User
 from django.shortcuts import render, redirect
@@ -24,10 +27,12 @@ class GetUserApi(APIView):
     Determine current user. Return user name, email 
     and profile picture URL
     """
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = []
 
     def get(self, request, *args, **kwargs):
-        return Response(get_user_info(user=request.user))
+        if request.user.is_authenticated:
+            return Response(get_user_info(user=request.user))
+        return JsonResponse(data={}, status=status.HTTP_204_NO_CONTENT)
 
 
 class GoogleLoginAPI(APIView):

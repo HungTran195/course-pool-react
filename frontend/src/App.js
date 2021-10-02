@@ -22,7 +22,7 @@ const App = () => {
         if (!user.email) {
             fetch(REACT_APP_BASE_URL + '/accounts/auth/get-current-user')
                 .then(response => {
-                    if (response.status === 401) {
+                    if (response.status === 204) {
                         return;
                     }
                     return response.json()
