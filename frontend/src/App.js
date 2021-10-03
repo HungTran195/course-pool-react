@@ -19,8 +19,8 @@ const App = () => {
     const { user, setUser } = useContext(UserContext);
     
     useEffect(() => {
+
         if (!user.email) {
-            
             fetch(REACT_APP_BASE_URL + '/accounts/auth/get-current-user')
                 .then(response => {
                     if (response.status === 204) {

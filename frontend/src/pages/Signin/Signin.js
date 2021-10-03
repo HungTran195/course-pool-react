@@ -15,7 +15,7 @@ const SignIn = () => {
     const [password, setPassword] = useState('');
 
     if(user.email){
-        history.push('/')
+        window.location = REACT_APP_BASE_URL;
     }
         
     const handleFormSubmit = (event) => {
@@ -43,6 +43,7 @@ const SignIn = () => {
                     profilePicture: user_info.profile_picture,
                 };
                 setUser(new_user);
+                window.location = REACT_APP_BASE_URL;
             }
         });
         event.preventDefault();
