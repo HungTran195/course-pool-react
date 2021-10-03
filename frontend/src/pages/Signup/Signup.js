@@ -16,10 +16,12 @@ const Signup = () => {
     };
     const history = useHistory();
     const [newUser, setNewUser] = useState(initialValues);
-    const {user} = useContext(UserContext)
+    const {user} = useContext(UserContext)    
+
     if(user.email){
         history.push('/')
     }
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setNewUser({
@@ -28,14 +30,14 @@ const Signup = () => {
         });
     };
 
-    const handleFormSubmit = (e) => {
-        const newUser = {
+    const handleFormSubmit = (event) => {
+        const newUserInfo = {
             'first_name': newUser.firstName,
             'last_name': newUser.lastName,
             'email': newUser.email,
             'password': newUser.password1
         };
-
+        
         if (newUser.password1 !== newUser.password2) {
             notifyError('Passwords do not match');
         }
@@ -46,7 +48,7 @@ const Signup = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(newUser),
+                body: JSON.stringify(newUserInfo),
             }).then(res => {
                 if (res.status === 201) {
                     window.location = REACT_APP_BASE_URL;
@@ -59,7 +61,7 @@ const Signup = () => {
                 });
             });
         }
-        e.preventDefault();
+        event.preventDefault();
     }
 
     return (

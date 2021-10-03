@@ -10,15 +10,14 @@ const LOGIN_URL = REACT_APP_BASE_URL + '/accounts/auth/login';
 
 const SignIn = () => {
     const history = useHistory();
-    const {user} = useContext(UserContext);
+    const {user, setUser} = useContext(UserContext);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     if(user.email){
         history.push('/')
     }
         
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    
     const handleFormSubmit = (event) => {
         const data = { 'email': email, 'password': password };
         fetch(LOGIN_URL, {
@@ -30,10 +29,20 @@ const SignIn = () => {
             body: JSON.stringify(data),
         }).then(res => {
             if (res.status === 201) {
-                history.push('/');
+                return res.json()
             }
             else {
                 notifyError('Wrong email or password');
+            }
+        }).then(data => {
+            if (data?.token){
+                const user_info = data['me'];
+                const new_user = {
+                    name: user_info.name,
+                    email: user_info.email,
+                    profilePicture: user_info.profile_picture,
+                };
+                setUser(new_user);
             }
         });
         event.preventDefault();

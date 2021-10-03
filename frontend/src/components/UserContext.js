@@ -28,8 +28,7 @@ const UserProvider = ({ children }) => {
                 if (data.ok) {
                     console.log('Success Logout');
                     setUser({});
-                    history.push('/login');
-
+                    window.location = REACT_APP_BASE_URL + '/login';
                 }
                 else console.log('Logout failed');
             })
