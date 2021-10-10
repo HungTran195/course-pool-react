@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import {NavLink, useHistory } from 'react-router-dom';
 import {UserContext} from '../UserContext';
 import { Button, Avatar } from '@material-ui/core';
 import "./navbar.css"
@@ -66,25 +66,23 @@ const NavContainer = () => {
                 {/* Main Menu */}
                 <div className="collapse navbar-collapse order-md-2 ms-2" id="navbarNav">
                     <ul className="navbar-nav">
-                        <li className=" nav-item px-2">
-                            <a className=" nav-link navbar-text" id="home" href="/">Home</a>
-                        </li>
+                        <NavLink exact to="/" className=" nav-link navbar-text px-3">
+                           Home
+                        </NavLink>
                         {user.email ?  (
-                            <li className="nav-item px-2">
-                                <a className="nav-link navbar-text " id='favorite' href="/favorite">Favorite</a>
-                            </li>)
+                            <NavLink exact to="/favorite" className=" nav-link navbar-text px-3">
+                                Favorite
+                            </NavLink> )
                             : (null)
                         }
                         
-
-                        <li className="nav-item px-2">
-                            <a className="nav-link navbar-text " id="suggest" href="/suggest-course">Suggest
-                                a
-                                Course</a>
-                        </li>
-                        <li className="nav-item px-2">
-                            <a className="nav-link navbar-text " id="about" href="/about">About</a>
-                        </li>
+                        <NavLink exact to="/suggest-course" className=" nav-link navbar-text px-3">
+                            Suggest a Course
+                        </NavLink>
+                        <NavLink exact to="/about" className=" nav-link navbar-text px-3">
+                        About
+                        </NavLink>
+                        
                     </ul>
                 </div>
             </div>
