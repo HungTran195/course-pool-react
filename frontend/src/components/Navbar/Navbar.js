@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import {UserContext} from '../UserContext';
 import { Button, Avatar } from '@material-ui/core';
-
 import "./navbar.css"
 
 const NavContainer = () => {
@@ -48,7 +47,7 @@ const NavContainer = () => {
                 <a className="navbar-brand flex-shrink-0 order-md-1 ms-2 me-1 d-flex justify-content-center align-items-center"
                     href="/">
                     <img className="logo"
-                        src="../../static/images/logo.png" alt="" />
+                        src="../../static/images/logo1.png" alt="" />
                 </a>
 
                 {/* Button toggle navbar menu in mobile window size */}
@@ -67,23 +66,23 @@ const NavContainer = () => {
                 {/* Main Menu */}
                 <div className="collapse navbar-collapse order-md-2 ms-2" id="navbarNav">
                     <ul className="navbar-nav">
-                        <li className=" nav-item px-sm-2">
+                        <li className=" nav-item px-2">
                             <a className=" nav-link navbar-text" id="home" href="/">Home</a>
                         </li>
                         {user.email ?  (
-                            <li className="nav-item px-sm-2">
+                            <li className="nav-item px-2">
                                 <a className="nav-link navbar-text " id='favorite' href="/favorite">Favorite</a>
                             </li>)
                             : (null)
                         }
                         
 
-                        <li className="nav-item px-sm-2">
+                        <li className="nav-item px-2">
                             <a className="nav-link navbar-text " id="suggest" href="/suggest-course">Suggest
                                 a
                                 Course</a>
                         </li>
-                        <li className="nav-item px-sm-2">
+                        <li className="nav-item px-2">
                             <a className="nav-link navbar-text " id="about" href="/about">About</a>
                         </li>
                     </ul>
