@@ -54,7 +54,7 @@ const AboutPage = () => {
                         <div  className=" col-md-6 col-12">
                             <div className=" " 
                                 style={{ fontSize: "1.2rem"}}>
-                                <p>My name is Quoc Hung Tran. I am a Software Engineer with a huge passion for building things and solving problems.</p>
+                                <p>My name is <span className="text-name-footter">Hung Quoc Tran</span>. I am a Software Engineer with a huge passion for building things and solving problems.</p>
                                 <p> Check out more about what I am working on at my Github
                                     <span className="ps-3">
                                         <a href="https://github.com/QuocHung52">
