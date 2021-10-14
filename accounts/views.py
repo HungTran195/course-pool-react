@@ -25,7 +25,7 @@ UserModel = get_user_model()
 class GetUserApi(APIView):
     """
     Determine current user. Return user name, email 
-    and profile picture URL
+    and profile image
     """
     permission_classes = []
 
@@ -39,7 +39,7 @@ class GoogleLoginAPI(APIView):
     """
     Manage login with Google
     Get token from request and obtain user information: email, 
-    user name and profile picture url
+    user name and profile image
     """
     permission_classes = []
 
@@ -67,7 +67,7 @@ class GoogleLoginAPI(APIView):
             'first_name': user_info.get('given_name'),
             'last_name': user_info.get('family_name'),
             'email': user_info.get('email'),
-            'picture_url': user_info.get('picture'),
+            'profile_image': user_info.get('picture'),
         }
 
         user = user_get_or_create(profile_data)

@@ -90,7 +90,7 @@ def user_create(profile_data, password=None, **extra_fields):
         email=profile_data['email'],
         first_name=profile_data['first_name'],
         last_name=profile_data['last_name'],
-        picture_url=profile_data['picture_url'])
+        profile_image=profile_data['profile_image'])
 
     if password:
         user.set_password(password)
@@ -136,16 +136,3 @@ def jwt_response_payload_handler(token, user=None, request=None, *args, **kwargs
         'token': token,
         'me': get_user_info(user=user),
     }
-
-
-def create_profile_data(first_name, last_name, email, profile_pictue=None):
-    if not profile_pictue:
-        profile_pictue = ''
-
-    profile_data = {
-        'email': email,
-        'first_name': first_name,
-        'last_name': last_name,
-        'picture_url': profile_pictue
-    }
-    return profile_data
