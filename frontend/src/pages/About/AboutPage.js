@@ -7,9 +7,6 @@ const AboutPage = () => {
     return (
         <>
             <div className="container my-4">
-                <div className="mb-3">
-                    <h1 className="text-light slogan  fw-bold"> About Course Pool</h1>
-                </div>
                 <div className="align-items-center">
                     <div className="d-flex justify-content-center align-items-center mb-3" >
                         <img src="../../static/images/logo.png" 
@@ -22,6 +19,7 @@ const AboutPage = () => {
                                 style={{
                                     maxWidth: "400px",
                                     width: "100%",
+                                    paddingBottom: "1rem",
                                     objectFit: "cover",
                                     transition: "width 0.2s ease-in",
                                 }} />

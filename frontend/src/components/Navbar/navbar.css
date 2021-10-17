@@ -1,7 +1,12 @@
-.account-dropdown-min-width{
-    min-width: 9rem;
+.account-dropdown-min-width {
+  min-width: 9rem;
 }
 
-.account-name{
-    font-size: 1.15rem;
+.account-name {
+  font-size: 1.15rem;
+}
+
+.navbar-text {
+  font-size: 1.1rem;
+  padding: 0.4rem 0.5rem;
 }
