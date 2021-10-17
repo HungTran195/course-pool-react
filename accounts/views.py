@@ -16,7 +16,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from .utils import google_obtain_access_token, google_get_user_info, user_get_or_create, jwt_login, get_user_info
 
-BASE_URL = 'http://127.0.0.1:8000'
+BASE_URL = settings.BASE_URL
 LOGIN_URL = f'{BASE_URL}/accounts/auth/login'
 
 UserModel = get_user_model()

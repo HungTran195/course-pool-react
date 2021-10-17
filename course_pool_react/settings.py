@@ -38,7 +38,7 @@ SECRET_KEY = env.str('DJANGO_SECRET_KEY', default=get_random_secret_key())
 DEBUG = env.str('DEBUG', default=False)
 
 ALLOWED_HOSTS = ['127.0.0.1']
-
+BASE_URL = env.str('BASE_URL', default='http://127.0.0.1:8000')
 
 # Application definition
 
