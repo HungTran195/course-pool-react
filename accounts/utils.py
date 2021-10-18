@@ -124,7 +124,7 @@ def get_user_info(*, user: User):
     return {
         'name': user.name,
         'email': user.email,
-        'profile_image': user.profile_image
+        'profile_picture': user.profile_image
     }
 
 
