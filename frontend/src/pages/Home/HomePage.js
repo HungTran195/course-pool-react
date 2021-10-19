@@ -46,7 +46,6 @@ const HomePage = () => {
 		<> 
 			<HeroSectionForHome />
 			<div className='container'>
-				{isLoading ? <Spinner /> : null}
 				
 				<div className="d-flex flex-column align-items-center justify-content-center pt-4 pb-2">
 					{searchResults ? (
@@ -66,6 +65,7 @@ const HomePage = () => {
 							<h2 className="text-light text-center py-4">Top picks from us!</h2>)
 					}
 				</div>
+				{isLoading ? <Spinner /> : null}
 
 
 				<CourseCard allCourses={searchResults === undefined ? courses : searchResults} />
