@@ -39,6 +39,8 @@ DEBUG = env.str('DEBUG', default=False)
 
 ALLOWED_HOSTS = ['127.0.0.1']
 BASE_URL = env.str('BASE_URL', default='http://127.0.0.1:8000')
+DEFAULT_PROFILE_PICTURE_URL = env.str(
+    'DEBUG', default='https://defaultprofil.com')
 
 # Application definition
 

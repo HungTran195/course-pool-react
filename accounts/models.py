@@ -2,8 +2,10 @@ from .managers import CustomUserManager
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.management.utils import get_random_secret_key
+from django.conf import settings
 
-DEFAULT_PROFILE_PICTURE_URL = 'http://defaultprofil.com'
+
+DEFAULT_PROFILE_PICTURE_URL = settings.DEFAULT_PROFILE_PICTURE_URL
 
 
 class User(AbstractUser):
@@ -12,6 +14,7 @@ class User(AbstractUser):
     and secret key for verification
     """
     username = None
+
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.EmailField(unique=True, db_index=True)

@@ -1,7 +1,9 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 
-DEFAULT_PROFILE_PICTURE_URL = 'http://defaultprofil.com'
+
+DEFAULT_PROFILE_PICTURE_URL = settings.DEFAULT_PROFILE_PICTURE_URL
 
 
 class CustomUserManager(BaseUserManager):
@@ -14,7 +16,7 @@ class CustomUserManager(BaseUserManager):
         """
         Create and save a User with the given email and password.
         """
-        extra_fields.setdefault('picture_url', DEFAULT_PROFILE_PICTURE_URL)
+        extra_fields.setdefault('profile_image', DEFAULT_PROFILE_PICTURE_URL)
         if not email:
             raise ValueError(_('The Email must be set'))
         email = self.normalize_email(email)
