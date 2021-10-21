@@ -73,7 +73,7 @@ const SuggestCoursePage = () => {
         <>
             <HeroSectionForSuggest />
             <div className="container">
-            <div id="forms" className="pb-3 pt-3 pb-5">
+            <div id="forms" className="pt-3 pb-5 ms-3">
                 <form className="form mx-auto" onSubmit={handleFormSubmit}>
                     <div className="input-group row">
                         <label

@@ -115,7 +115,7 @@ const Signup = () => {
                         <div className="w-100 text-center mt-4 text">
                             <p className="my-0 py-1">Already have an account?</p>
                             <div>
-                                <a href="/login"><button className="btn btn-secondary">Login</button></a>
+                                <a href="/login"><button className="btn btn-primary">Login</button></a>
                             </div>
                         </div>
 

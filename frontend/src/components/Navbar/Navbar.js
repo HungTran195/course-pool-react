@@ -2,27 +2,12 @@ import React, { useContext } from 'react';
 import {NavLink, useHistory } from 'react-router-dom';
 import {UserContext} from '../UserContext';
 import { Button, Avatar } from '@material-ui/core';
+import { LoginButton } from '../Button/Button';
 import "./navbar.css"
 
 const NavContainer = () => {
     const { user, signOutUser } = useContext(UserContext);
     const history = useHistory();
-
-    const showLoginButton = () => {
-        return (
-            <>
-                <a href="" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"><i
-                    className="fas fa-user-circle fa-2x text-white-50"></i></a>
-                <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="dropdownMenuLink">
-                    <li className="d-flex justify-content-center align-items-end ">
-                        <Button className="w-75" variant="contained" color="primary" href="/login">
-                            Login
-                        </Button>
-                    </li>
-                </ul>
-            </>
-        )
-    };
 
     const showAvatar = () => {
         return (
@@ -59,7 +44,10 @@ const NavContainer = () => {
 
                 {/* Avatar of user */}
                 <div className="order-md-4 mx-2 dropdown fs-5">
-                    {user.email ? showAvatar() : showLoginButton()}
+                    {user.email ? 
+                        showAvatar() 
+                        : <LoginButton variant="contained" color="primary" disableRipple href="/login" >Login</LoginButton>}
+                    
                 </div>
 
 
