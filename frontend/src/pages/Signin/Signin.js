@@ -77,12 +77,12 @@ const SignIn = () => {
                                     placeholder="Password" required value={password} onChange={e => setPassword(e.target.value)} />
                             </div>
 
-                            {/* TODO reset password
                             <div className="form-group">
                                 <div className="w-100 d-flex justify-content-end mb-3 ">
-                                    <a href="{% url 'courses:password_reset' %}">Forgot Password?</a>
+                                    <a className="fst-italic" style={{color: '#ccc'}} href="/reset-password">Forgot Password? </a>
                                 </div>
-                            </div> */}
+                            </div>
+                            
                             <div className="form-group">
                                 <button type="submit" className="btn form-control btn-primary rounded submit px-3">Get
                                     Started</button>

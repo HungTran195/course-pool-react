@@ -10,4 +10,6 @@ urlpatterns = [
     path('auth/login', obtain_jwt_token),
     path('auth/signup', SignUpUserApi.as_view()),
     path('auth/api_token_refresh', refresh_jwt_token),
+    re_path(r'^auth/', include('djoser.urls')),
+    re_path(r'^auth/', include('djoser.urls.authtoken')),
 ]

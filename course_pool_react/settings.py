@@ -13,6 +13,7 @@ import environ
 import datetime
 from pathlib import Path
 from django.core.management.utils import get_random_secret_key
+import djoser
 
 
 # Load environment variable
@@ -64,6 +65,8 @@ INSTALLED_APPS = [
     'rest_framework_jwt',
     'rest_framework_jwt.blacklist',
     'corsheaders',
+
+    'djoser',
 ]
 
 MIDDLEWARE = [
@@ -140,6 +143,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -189,3 +193,16 @@ REST_FRAMEWORK = {
 # Google OAuth authentication
 GOOGLE_OAUTH2_CLIENT_ID = env.str('GOOGLE_OAUTH2_CLIENT_ID')
 GOOGLE_OAUTH2_CLIENT_SECRET = env.str('GOOGLE_OAUTH2_CLIENT_SECRET')
+
+# Djoser Configuration
+DJOSER = {
+    "USER_ID_FIELD": "username",
+    "LOGIN_FIELD": "email",
+    'PASSWORD_RESET_CONFIRM_URL': 'reset-password/{uid}/{token}',
+
+    'PERMISSIONS': {
+        'user': ['rest_framework.permissions.AllowAny'],
+        'user_list': ['rest_framework.permissions.AllowAny'],
+        'password_reset': ['rest_framework.permissions.AllowAny'],
+    }
+}
