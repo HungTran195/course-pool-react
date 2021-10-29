@@ -84,11 +84,6 @@ class LogoutAPI(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        user = request.user
-        user.secret_key = get_random_secret_key()
-        user.clean()
-        user.save()
-
         response = Response(status=status.HTTP_202_ACCEPTED)
         response.delete_cookie(settings.JWT_AUTH['JWT_AUTH_COOKIE'])
         return response
