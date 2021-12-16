@@ -25,6 +25,5 @@ dev*.html
 # NodeJS
 .node
 node_modules/
-/frontend/static/frontend/main.js
 
 
