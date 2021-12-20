@@ -1,12 +1,9 @@
-from rest_framework import generics, serializers, status
+from rest_framework import generics, status
 from rest_framework.response import Response
 from .serializers import CourseSerializer, FavoriteCourseSerializer, AddCourseSerializer
 from .models import Course, Suggest_Course, Your_Course
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models import Q
-from rest_framework.exceptions import ValidationError
-
-
 class CourseView(generics.ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = CourseSerializer
@@ -14,27 +11,29 @@ class CourseView(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         queryset = Course.objects.all()
-
         search_keywords = request.query_params.get('keywords')
         if search_keywords is not None:
             queryset = queryset.filter(
                 Q(course_name__icontains=search_keywords) | Q(tags__icontains=search_keywords))
 
         serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+
+        response = Response(serializer.data)
+        return response
 
 
 class GetFavoriteCourseAPI(generics.ListAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     serializer_class = CourseSerializer
+    queryset = Course.objects.all()
 
     def get(self, request):
         user = request.user
-
         if user.is_authenticated:
             queryset = Course.objects.filter(your_course__user=user)
             serializer = self.get_serializer(queryset, many=True)
-            return Response(serializer.data)
+            response=Response(data=serializer.data)
+            return response
 
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 

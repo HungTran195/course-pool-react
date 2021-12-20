@@ -3,10 +3,19 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import UserProvider from './components/UserContext';
+import CourseProvider from './components/CourseContext';
+import { BrowserRouter as Router } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <UserProvider>
+        <CourseProvider>
+            <App />
+        </CourseProvider>  
+      </UserProvider>
+    </Router> 
   </React.StrictMode>,
   document.getElementById('root')
 );

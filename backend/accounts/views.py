@@ -1,8 +1,6 @@
-from django.http.response import JsonResponse
 from accounts.serializers import UserSerializer
 from django.shortcuts import redirect
 from django.conf import settings
-from django.core.management.utils import get_random_secret_key
 from django.contrib.auth import get_user_model
 
 from rest_framework.generics import CreateAPIView
@@ -10,10 +8,12 @@ from rest_framework.views import APIView
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework_jwt.settings import api_settings
 
 from .utils import google_obtain_access_token, google_get_user_info, user_get_or_create, jwt_login, get_user_info
 
 BASE_URL = settings.BASE_URL
+BASE_FRONTEND_URL= settings.BASE_FRONTEND_URL
 LOGIN_URL = f'{BASE_URL}/accounts/auth/login'
 
 UserModel = get_user_model()
@@ -29,7 +29,7 @@ class GetUserApi(APIView):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return Response(get_user_info(user=request.user))
-        return JsonResponse(data={}, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class GoogleLoginAPI(APIView):
@@ -51,7 +51,6 @@ class GoogleLoginAPI(APIView):
         code = validated_data.get('code')
 
         if not code:
-            print(f'Code not found')
             return redirect(f'{LOGIN_URL}?error')
 
         redirect_uri = f'{LOGIN_URL}/google'
@@ -69,7 +68,7 @@ class GoogleLoginAPI(APIView):
 
         user = user_get_or_create(profile_data)
 
-        res = redirect(BASE_URL)
+        res = redirect(BASE_FRONTEND_URL)
         res = jwt_login(response=res, user=user)
         return res
 
@@ -82,7 +81,15 @@ class LogoutAPI(APIView):
 
     def post(self, request, *args, **kwargs):
         response = Response(status=status.HTTP_202_ACCEPTED)
-        response.delete_cookie(settings.JWT_AUTH['JWT_AUTH_COOKIE'])
+        params = {
+            'expires': 'Thu, 01 Jan 1970 00:00:00 GMT',
+            'domain': api_settings.JWT_AUTH_COOKIE_DOMAIN,
+            'path': api_settings.JWT_AUTH_COOKIE_PATH,
+            'secure': api_settings.JWT_AUTH_COOKIE_SECURE,
+            'samesite': api_settings.JWT_AUTH_COOKIE_SAMESITE,
+            'httponly': True
+        }
+        response.set_cookie(api_settings.JWT_AUTH_COOKIE, **params)
         return response
 
 

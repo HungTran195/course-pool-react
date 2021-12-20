@@ -32,7 +32,7 @@ SECRET_KEY = env.str('DJANGO_SECRET_KEY', default='TestRandomSecretKey!')
 
 DEBUG = env.str('DEBUG', default=False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 ALLOWED_HOSTS_URL = env.str('ALLOWED_HOSTS_URL', '')
 ALLOWED_HOSTS.append(ALLOWED_HOSTS_URL)
 
@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'rest_framework_jwt.blacklist',
 
     'djoser',
+    'corsheaders',
 
 ]
 
@@ -63,13 +64,15 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     
     'corsheaders.middleware.CorsMiddleware',
-
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -170,6 +173,7 @@ GOOGLE_OAUTH2_CLIENT_ID = env.str('GOOGLE_OAUTH2_CLIENT_ID')
 GOOGLE_OAUTH2_CLIENT_SECRET = env.str('GOOGLE_OAUTH2_CLIENT_SECRET')
 
 BASE_URL = env.str('BASE_URL', default='http://127.0.0.1:8000')
+BASE_FRONTEND_URL=env.str('BASE_FRONTEND_URL', default='localhost:3000')
 ADMIN_ENABLED = env.int('ADMIN_ENABLED', default=False)
 
 
@@ -195,18 +199,20 @@ JWT_AUTH = {
     'JWT_GET_USER_SECRET_KEY': lambda user: user.secret_key,
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'accounts.utils.jwt_response_payload_handler',
     'JWT_AUTH_COOKIE': 'jwt_token',
-    'JWT_AUTH_COOKIE_SAMESITE': 'None'
+    'JWT_AUTH_COOKIE_SAMESITE': 'None',
+    # 'JWT_AUTH_COOKIE_DOMAIN': 'http://localhost:3000'
+
 }
 
 # CORS Header configuration
+CORS_ALLOWED_ORIGINS = ['http://localhost:3000',]  # previously, this is CORS_ORIGIN_WHITELIST
+CORS_ALLOW_ALL_ORIGINS = False
+# cookies will be allowed to be included in cross-site HTTP requests.
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = [
-    'https://localhost:8000',
-    'https://course-pool-dev.herokuapp.com',
-    'https://course-pool.herokuapp.com',
+SESSION_COOKIE_SAMESITE = None # default is Lax by django
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000',]
 
-]
-CORS_ORIGIN_ALLOW_ALL = True
+
 
 # Email SMTP Configuration 
 SITE_NAME = "Course Pool"
