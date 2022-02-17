@@ -30,4 +30,3 @@ This is a starter project, completed project can be seen [here](https://course-p
 
 <em>Note: you need to keep both backend and frontend running.</em>
 
-#### New version of django - react: https://github.com/QuocHung52/course-pool-react
