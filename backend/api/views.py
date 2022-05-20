@@ -1,9 +1,14 @@
-from rest_framework import generics, status
-from rest_framework.response import Response
-from .serializers import CourseSerializer, FavoriteCourseSerializer, AddCourseSerializer
-from .models import Course, Suggest_Course, Your_Course
-from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models import Q
+from rest_framework import generics, serializers, status
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from .models import Course, Suggest_Course, Your_Course
+from .serializers import (AddCourseSerializer, CourseSerializer,
+                          FavoriteCourseSerializer)
+
+
 class CourseView(generics.ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = CourseSerializer
@@ -56,28 +61,36 @@ class AddNewCourseView(generics.CreateAPIView):
         return Response(status=status.HTTP_201_CREATED)
 
 
-class ToggleFavoriteAPI(generics.ListCreateAPIView):
+class ToggleFavoriteAPI(APIView):
     queryset = Your_Course
     serializer_class = FavoriteCourseSerializer
     permissions_class = [IsAuthenticated]
-
+    class InputSerializer(serializers.Serializer):
+        course_id = serializers.IntegerField(required=True)
+        
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        course_id = serializer.data.get('course')
-        if request.user:
-            favorite_model = self.queryset
-            favorate_course = favorite_model.objects.filter(
-                user=request.user).filter(course_id=course_id)
-            if favorate_course:
-                favorate_course.delete()
-            else:
-                q = favorite_model(
-                    user=request.user,
-                    course_id=course_id
-                )
-                q.clean()
-                q.save()
-            return Response(status=status.HTTP_200_OK)
+
+        input_serializer = self.InputSerializer(data=request.data)
+        input_serializer.is_valid(raise_exception=True)
+
+        validated_data = input_serializer.validated_data
+        course_id = validated_data.get('course_id')
+        try: 
+            course = Course.objects.get(id = course_id)
+        except Course.DoesNotExist:
+            raise ValueError('Course ID does not exist')
+
+        favorite_model = self.queryset
+        favorite_course = favorite_model.objects.filter(
+            user=request.user).filter(course=course)
+        if favorite_course:
+            favorite_course.delete()
         else:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+            q = favorite_model(
+                user=request.user,
+                course_id=course_id
+            )
+            q.clean()
+            q.save()
+        return Response(status=status.HTTP_200_OK)
+
