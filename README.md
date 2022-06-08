@@ -4,7 +4,7 @@
 
 A Django-React Version of [Coursepool](https://github.com/QuocHung52/course_pool)
 
-![Alt Text](https://github.com/QuocHung52/quochungtran/blob/master/img/CoursePool.png) 
+![Course Pool](https://github.com/QuocHung52/quochungtran/blob/6b1b890c8527bc5cbad2e688ae4951c2c680ea0b/src/assets/images/CoursePool.png) 
 
 
 
